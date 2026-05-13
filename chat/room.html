@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><title>{{ room.name }}</title>
+<style>
+  body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; }
+  .messages { border: 1px solid #ddd; border-radius: 8px; padding: 16px; height: 400px; overflow-y: auto; margin-bottom: 12px; }
+  .msg { margin: 8px 0; }
+  .msg .user { font-weight: bold; color: #555; font-size: 13px; }
+  .msg .mine .user { color: #4CAF50; }
+  form { display: flex; gap: 8px; }
+  input[type=text] { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
+  button { padding: 8px 16px; background: #2196F3; color: white; border: none; border-radius: 6px; cursor: pointer; }
+</style>
+</head>
+<body>
+  <h2>🏠 {{ room.name }} | <a href="{% url 'room_list' %}">← Буцах</a></h2>
+  <div class="messages" id="msg-box">
+    {% for message in messages %}
+      <div class="msg {% if message.sender == request.user %}mine{% endif %}">
+        <span class="user">{{ message.sender.username }}</span>
+        <span class="time" style="color:#aaa;font-size:12px"> {{ message.timestamp|date:"H:i" }}</span>
+        <div>{{ message.content }}</div>
+      </div>
+    {% endfor %}
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <input type="text" name="content" placeholder="Мессеж бичих..." autocomplete="off" autofocus>
+    <button type="submit">Илгээх</button>
+  </form>
+  <script>
+    // Шинэ мессеж авахын тулд 3 секунд тутам refresh
+    const box = document.getElementById('msg-box');
+    box.scrollTop = box.scrollHeight;
+    setInterval(() => location.reload(), 3000);
+  </script>
+</body>
+</html>

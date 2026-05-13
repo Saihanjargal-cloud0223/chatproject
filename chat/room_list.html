@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><title>Чат</title>
+<style>
+  body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+  .rooms, .users { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+  a { text-decoration: none; background: #f0f0f0; padding: 8px 16px; border-radius: 8px; color: #333; }
+  a:hover { background: #e0e0e0; }
+  input[type=text] { padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
+  button { padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer; }
+</style>
+</head>
+<body>
+  <h2>Сайн уу, {{ request.user.username }}! | <a href="{% url 'logout' %}">Гарах</a></h2>
+
+  <h3>Чат өрөөнүүд</h3>
+  <div class="rooms">
+    {% for room in rooms %}
+      <a href="{% url 'room' room.name %}">🏠 {{ room.name }}</a>
+    {% empty %}
+      <p>Өрөө байхгүй байна.</p>
+    {% endfor %}
+  </div>
+
+  <h4>Шинэ өрөө үүсгэх</h4>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.name }} <button type="submit">Үүсгэх</button>
+  </form>
+
+  <h3>Хэрэглэгчид (Шууд чат)</h3>
+  <div class="users">
+    {% for user in users %}
+      <a href="{% url 'direct_chat' user.username %}">👤 {{ user.username }}</a>
+    {% endfor %}
+  </div>
+</body>
+</html>
