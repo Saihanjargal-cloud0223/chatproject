@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-4=h$a=v5-n#l^zyi7kayhx_*q36@gz*xoeqy0zqu%de_8$g5ua
 DEBUG = True
 
 ALLOWED_HOSTS = ['chatproject-production-4f56.up.railway.app', '*']
+CSRF_TRUSTED_ORIGINS = ['https://chatproject-production-4f56.up.railway.app']
 
 
 # Application definition
