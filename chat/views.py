@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import ChatRoom, Message, DirectMessage
 from .forms import ChatRoomForm, MessageForm
 
@@ -20,6 +20,17 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('room_list')
+    else:
+        form = UserCreationForm()
+    return render(request, 'chat/register.html', {'form': form})
 
 @login_required
 def room_list(request):
